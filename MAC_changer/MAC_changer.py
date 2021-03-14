@@ -24,6 +24,10 @@ def get_args():
         return options
 
 def check_interface_MAC(interface):
+    '''
+    Function that takes a network interface name (e.g 'eth0') and returns MAC address for that interface.
+    '''
+
     info = subprocess.Popen(["ifconfig", interface], stdout=subprocess.PIPE)
     text = subprocess.check_output(["grep", "ether"], stdin=info.stdout)
     reg = r"((?:\w{2}:){5}(?:\w{2}))"
