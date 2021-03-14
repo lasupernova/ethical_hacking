@@ -23,6 +23,20 @@ def get_args():
     else:
         return options
 
+def check_interface_MAC(interface):
+    info = subprocess.Popen(["ifconfig", interface], stdout=subprocess.PIPE)
+    text = subprocess.check_output(["grep", "ether"], stdin=info.stdout)
+    reg = r"((?:\w{2}:){5}(?:\w{2}))"
+    detected_mac = re.findall(reg, str(text)) #text is a byte-like object -> use str() to convert into string
+    if len(detected_mac) < 1:
+        print("ERROR: No currently used AC address for specified interface found! Check interface input\n")
+        return 0
+    elif len(detected_mac) > 1:
+        print(f"ERROR: {len(detected_mac)} MAC addresses detected.")
+        return 0
+    else:
+        return detected_mac[0]
+        
 def change_mac(interface, new_mac):
     '''
     MAC changer taking command line arguments to specify interface and desired MAC address
