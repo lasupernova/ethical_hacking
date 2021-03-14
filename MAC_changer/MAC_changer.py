@@ -36,22 +36,37 @@ def check_interface_MAC(interface):
         return 0
     else:
         return detected_mac[0]
-        
+
 def change_mac(interface, new_mac):
     '''
     MAC changer taking command line arguments to specify interface and desired MAC address
     '''
 
     print("\n\t- - - - - - MAC address changer - - - - - -\n")
-    print(f"\n[+] Changing MAC address for {interface}")
+
+    current_mac = check_interface_MAC(interface)
+
+    if current_mac == new_mac:
+        print(f"\t[-] The current MAC address for {interface} is already {new_mac}")
+        print("\n\t    Quitting program.")
+        quit()
+    elif current_mac != 0:
+        print(f"\nCurrent MAC address for {interface}: {current_mac}")
+    else:
+        quit()
+
+    print(f"\n\t[+] Changing MAC address for {interface}")
 
     subprocess.call(["ifconfig", interface, "down"])
     subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
     subprocess.call(["ifconfig", interface, "up"])
 
-    print(f"\n[+] MAC address changed to {new_mac}\n")
-
-    subprocess.call(f"ifconfig eth0", shell=True)
+    current_mac = check_interface_MAC(interface)
+    if (current_mac !=0) and (current_mac==new_mac):
+        print(f"\n\t[+] MAC address for {interface} changed to: {current_mac}")
+    else:
+        print(f"\n\t[-] MAC address for {interface} could not be changed. The current MAC address is {current_mac}")
+        quit()
 
 if __name__ == "__main__":
     options = get_args()
