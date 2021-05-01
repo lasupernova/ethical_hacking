@@ -32,4 +32,5 @@ def process_sniffed_package(packet):
             pass
 
 if __name__ == "__main__":
+    print("Looking for threats...")
     sniff('eth0')
